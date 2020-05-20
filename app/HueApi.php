@@ -2,12 +2,19 @@
 
 namespace App;
 
+use GuzzleHttp\Client;
 
 
 class HueApi {
 
-    public function __construct(){
+    protected $client;
 
+    public function __construct(){
+        $this->client = new Client(['base_uri' => $this->getBaseUri()]);
+    }
+
+    public function getBaseUri(){
+        return $this->getHueAddress() . "api/" . $this->getUsername() . '/';
     }
 
     public function getUsername(){
@@ -16,6 +23,16 @@ class HueApi {
 
     public function getHueAddress(){
         return getenv('HUE_BRIDGE_ADDRESS');
+    }
+
+    public function get($endpoint){
+        $res = $this->client->get($endpoint);
+        return $res;
+    }
+
+    public function post($endpoint,$data,$method='POST'){
+        $res = $this->client->post($endpoint,['json'=>$data]);
+        return $res;
     }
 
 

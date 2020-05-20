@@ -28,4 +28,16 @@ class HueApiTest extends TestCase{
         $url = $this->hueApi->getHueAddress();
         $this->assertNotEmpty($url);
     }
+
+    public function testCanGetBaseUri(): void{
+        $baseUri = $this->hueApi->getBaseUri();
+        var_dump($baseUri);
+    }
+
+    public function testCanConnectToApi(){
+        $endpoint = "api";
+        $data = ["devicetype"=>"playground#iphone michael"];
+        $res = $this->hueApi->post($endpoint,$data);
+        var_dump($res->getBody()->getContents());
+    }
 }
